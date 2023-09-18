@@ -1,9 +1,8 @@
-# Getting Started
+# Começando
 
-To get started with Cargo, install Cargo (and Rust) and set up your first
-[*crate*][def-crate].
+Para começar com o Cargo, instale o Cargo (e o Rust) e configure sua primeira [*crate*][def-crate].
 
-* [Installation](installation.md)
-* [First steps with Cargo](first-steps.md)
+* [Instalação](installation.md)
+* [Primeiros passos com o Cargo](first-steps.md)
 
 [def-crate]:  ../appendix/glossary.md#crate  '"crate" (glossary entry)'

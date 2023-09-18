@@ -2,7 +2,7 @@
 
 [Introdução](index.md)
 
-* [Getting Started](getting-started/index.md)
+* [Começando](getting-started/index.md)
     * [Instalação](getting-started/installation.md)
     * [First Steps with Cargo](getting-started/first-steps.md)
 
