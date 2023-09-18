@@ -1,37 +1,37 @@
-# Installation
+# Instalação
 
-## Install Rust and Cargo
+## Instalando o Rust e Cargo
 
-The easiest way to get Cargo is to install the current stable release of [Rust]
-by using [rustup]. Installing Rust using `rustup` will also install `cargo`.
+A maneira mais fácil de obter o Cargo é instalando a versão estável atual do [Rust]
+usando [rustup]. Instalando o Rust usando o `rustup` também instalará o `cargo`
 
-On Linux and macOS systems, this is done as follows:
+Nos sistemas Linux e macOS, isto é feito da seguinte forma:
 
 ```console
 curl https://sh.rustup.rs -sSf | sh
 ```
 
-It will download a script, and start the installation. If everything goes well,
-you’ll see this appear:
+Isto vai baixar um script, e iniciará a instalação. se tudo correr bem,
+ você verá isto aparecer:
 
 ```console
 Rust is installed now. Great!
 ```
 
-On Windows, download and run [rustup-init.exe]. It will start the installation
-in a console and present the above message on success.
+No Windows, baixe e execute [rustup-init.exe]. Isto iniciará a instalação em
+ um console e apresentará a mensagem acima em caso de sucesso.
 
-After this, you can use the `rustup` command to also install `beta` or `nightly`
-channels for Rust and Cargo.
+Depois disso você pode usar o comando `rustup` para instalar os
+ canais `beta` ou `nightly` para o Rust e Cargo.
 
-For other installation options and information, visit the
-[install][install-rust] page of the Rust website.
+Para outras opções de instalação e informações, visite a
+página de [instalação][install-rust] do site Rust.
 
-## Build and Install Cargo from Source
+## Construa e instale o Cargo a partir do código fonte
 
-Alternatively, you can [build Cargo from source][compiling-from-source].
+Alternativa, você pode [construir o Cargo a partir do código fonte][compiling-from-source].
 
-[rust]: https://www.rust-lang.org/
+[rust]: https://www.rust-lang.org/pt-BR/
 [rustup]: https://rustup.rs/
 [rustup-init.exe]: https://win.rustup.rs/
 [install-rust]: https://www.rust-lang.org/tools/install

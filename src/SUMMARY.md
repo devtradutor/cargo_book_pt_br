@@ -3,7 +3,7 @@
 [Introdução](index.md)
 
 * [Getting Started](getting-started/index.md)
-    * [Installation](getting-started/installation.md)
+    * [Instalação](getting-started/installation.md)
     * [First Steps with Cargo](getting-started/first-steps.md)
 
 * [Cargo Guide](guide/index.md)
