@@ -2,8 +2,8 @@
 
 Esta é a tradução do [Livro Cargo](https://doc.rust-lang.org/cargo/)
 
-## Status da Tradução
+## Processo da Tradução
 
-Processo | Arquivos
-:---:|:----:
-Andamento :running::running: | `1/87`
+Status | Arquivos | Concluído
+:---:|:----:|:----:
+Em Andamento :running::running: | `3/87` | `3,4%`
