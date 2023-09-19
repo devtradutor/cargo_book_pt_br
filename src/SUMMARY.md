@@ -4,7 +4,7 @@
 
 * [Começando](getting-started/index.md)
     * [Instalação](getting-started/installation.md)
-    * [First Steps with Cargo](getting-started/first-steps.md)
+    * [Primeiros Passos com o Cargo](getting-started/first-steps.md)
 
 * [Cargo Guide](guide/index.md)
     * [Why Cargo Exists](guide/why-cargo-exists.md)

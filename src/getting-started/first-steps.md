@@ -1,20 +1,20 @@
-# First Steps with Cargo
+# Primeiros Passos com o Cargo
 
-This section provides a quick sense for the `cargo` command line tool. We
-demonstrate its ability to generate a new [***package***][def-package] for us,
-its ability to compile the [***crate***][def-crate] within the package, and
-its ability to run the resulting program.
+Esta seção fornece uma noção rápida da ferramenta de linha de comando do `cargo`.
+ Nos demonstramos sua capacidade de gerar um novo [***pacote***][def-package] para nós,
+ sua capacidade de compilar o [***crate***][def-crate] dentro do pacote, e sua
+ capacidade de executar o resultado do programa.
 
-To start a new package with Cargo, use `cargo new`:
+Para iniciar um novo pacote com o Cargo, use  o `cargo new`:
 
 ```console
 $ cargo new hello_world
 ```
 
-Cargo defaults to `--bin` to make a binary program. To make a library, we
-would pass `--lib`, instead.
+O Cargo por padrão usa `--bin` para criar programa binário. Para fazer uma biblioteca,
+ nós passaria o `--lib` em vez disso.
 
-Let’s check out what Cargo has generated for us:
+Vamos ver o que o Cargo gerou para nós:
 
 ```console
 $ cd hello_world
@@ -27,7 +27,7 @@ $ tree .
 1 directory, 2 files
 ```
 
-This is all we need to get started. First, let’s check out `Cargo.toml`:
+Isto é tudo que nos precisamos para começar. Primeiro, vamos verificar o `Cargo.toml`:
 
 ```toml
 [package]
@@ -38,10 +38,10 @@ edition = "2021"
 [dependencies]
 ```
 
-This is called a [***manifest***][def-manifest], and it contains all of the
-metadata that Cargo needs to compile your package.
+Isto é chamado de [***manifest***][def-manifest], e contém todos os metadados
+ que o Cargo precisa para compilar seu pacote.
 
-Here’s what’s in `src/main.rs`:
+Aqui está o que está incluso no `src/main.rs`
 
 ```rust
 fn main() {
@@ -49,22 +49,22 @@ fn main() {
 }
 ```
 
-Cargo generated a “hello world” program for us, otherwise known as a
-[***binary crate***][def-crate]. Let’s compile it:
+O Cargo gerou um programa "hello world" para nós, também conhecido como [***crate binário***][def-crate].
+ Vamos compilá-lo:
 
 ```console
 $ cargo build
    Compiling hello_world v0.1.0 (file:///path/to/package/hello_world)
 ```
 
-And then run it:
+E então execute-o:
 
 ```console
 $ ./target/debug/hello_world
 Hello, world!
 ```
 
-We can also use `cargo run` to compile and then run it, all in one step:
+Também podemos usar `cargo run` para compilar e depois executá-lo, tudo em uma única etapa:
 
 ```console
 $ cargo run
@@ -73,9 +73,9 @@ $ cargo run
 Hello, world!
 ```
 
-## Going further
+## Indo mais além
 
-For more details on using Cargo, check out the [Cargo Guide](../guide/index.md)
+Para mais detalhes sobre como usar o Cargo, consulte o [guia do Cargo](../guide/index.md)
 
 [def-crate]:     ../appendix/glossary.md#crate     '"crate" (glossary entry)'
 [def-manifest]:  ../appendix/glossary.md#manifest  '"manifest" (glossary entry)'
