@@ -6,7 +6,7 @@
     * [Instalação](getting-started/installation.md)
     * [Primeiros Passos com o Cargo](getting-started/first-steps.md)
 
-* [Cargo Guide](guide/index.md)
+* [Guia do Cargo](guide/index.md)
     * [Why Cargo Exists](guide/why-cargo-exists.md)
     * [Creating a New Package](guide/creating-a-new-project.md)
     * [Working on an Existing Package](guide/working-on-an-existing-project.md)

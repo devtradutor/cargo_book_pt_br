@@ -1,15 +1,15 @@
-# Cargo Guide
+# Guia do Cargo
 
-This guide will give you all that you need to know about how to use Cargo to
-develop Rust packages.
+Este guia lhe dará tudo o que você precisa saber sobre como usar o Cargo
+ para desenvolver pacotes em Rust.
 
-* [Why Cargo Exists](why-cargo-exists.md)
-* [Creating a New Package](creating-a-new-project.md)
-* [Working on an Existing Cargo Package](working-on-an-existing-project.md)
-* [Dependencies](dependencies.md)
-* [Package Layout](project-layout.md)
+* [Por que o Cargo existe](why-cargo-exists.md)
+* [Criando um Novo Pacote a New Package](creating-a-new-project.md)
+* [Tralhando em um Pacote Cargo Existente](working-on-an-existing-project.md)
+* [Dependências](dependencies.md)
+* [Layout do Pacote](project-layout.md)
 * [Cargo.toml vs Cargo.lock](cargo-toml-vs-cargo-lock.md)
-* [Tests](tests.md)
-* [Continuous Integration](continuous-integration.md)
-* [Cargo Home](cargo-home.md)
-* [Build Cache](build-cache.md)
+* [Testes](tests.md)
+* [Integração contínua](continuous-integration.md)
+* [Casa do Cargo (Cargo Home)](cargo-home.md)
+* [Construção de Cache](build-cache.md)
