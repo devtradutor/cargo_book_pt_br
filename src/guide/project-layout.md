@@ -1,7 +1,7 @@
-# Package Layout
+# Layout do Pacote
 
-Cargo uses conventions for file placement to make it easy to dive into a new
-Cargo [package][def-package]:
+O Cargo utiliza convenções para a organização de arquivos a fim de facilitar o entendimento de um 
+novo [pacote][def-package] do Cargo:
 
 ```text
 .
@@ -33,26 +33,25 @@ Cargo [package][def-package]:
         └── test_module.rs
 ```
 
-* `Cargo.toml` and `Cargo.lock` are stored in the root of your package (*package
-  root*).
-* Source code goes in the `src` directory.
-* The default library file is `src/lib.rs`.
-* The default executable file is `src/main.rs`.
-    * Other executables can be placed in `src/bin/`.
-* Benchmarks go in the `benches` directory.
-* Examples go in the `examples` directory.
-* Integration tests go in the `tests` directory.
+* `Cargo.toml` e `Cargo.lock` são armazenados na raiz do seu pacote (*base do pacote*).
+* O código-fonte é colocado no diretório `src`.
+* O arquivo de biblioteca padrão é `src/lib.rs`.
+* O arquivo executável padrão é `src/main.rs`.
+    * Outros executáveis podem ser colocados em `src/bin/`.
+* Os benchmarks são colocados no diretório `benches`.
+* Exemplos são colocados no diretório `examples`.
+* Testes de integração são colocados no diretório `tests`.
 
-If a binary, example, bench, or integration test consists of multiple source
-files, place a `main.rs` file along with the extra [*modules*][def-module]
-within a subdirectory of the `src/bin`, `examples`, `benches`, or `tests`
-directory. The name of the executable will be the directory name.
+Se um binário, exemplo, benchmark ou de integração de teste  consistir em vários arquivos de origem, 
+coloque um arquivo `main.rs` junto com os [módulos][def-module] 
+adicionais dentro de um subdiretório do diretório `src/bin`, `examples`, `benches` ou `tests`. 
+O nome do executável será o nome do diretório.
 
-You can learn more about Rust's module system in [the book][book-modules].
+Você pode aprender mais sobre o sistema de módulos do Rust no [livro][book-modules].
 
-See [Configuring a target] for more details on manually configuring targets.
-See [Target auto-discovery] for more information on controlling how Cargo
-automatically infers target names.
+Consulte [Configurando um alvo][Configuring a target] para obter mais detalhes sobre a configuração manual de alvos.
+Consulte [Descoberta automática de alvos][Target auto-discovery] para obter mais informações sobre como controlar como 
+o Cargo automaticamente infere nomes de alvos.
 
 [book-modules]: ../../book/ch07-00-managing-growing-projects-with-packages-crates-and-modules.html
 [Configuring a target]: ../reference/cargo-targets.md#configuring-a-target
