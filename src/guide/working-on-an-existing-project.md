@@ -1,24 +1,23 @@
-# Working on an Existing Cargo Package
+# Tralhando em um Pacote Cargo Existente
 
-If you download an existing [package][def-package] that uses Cargo, it’s
-really easy to get going.
+Se você baixar um [pacote][def-package] existente que usa o Cargo, 
+é realmente fácil começar.
 
-First, get the package from somewhere. In this example, we’ll use `regex`
-cloned from its repository on GitHub:
+Primeiro, obtenha o pacote de algum lugar. Neste exemplo, usaremos o `regex` clonado de seu repositório no GitHub:
 
 ```console
 $ git clone https://github.com/rust-lang/regex.git
 $ cd regex
 ```
 
-To build, use `cargo build`:
+Para construir, use `cargo build`:
 
 ```console
 $ cargo build
    Compiling regex v1.5.0 (file:///path/to/package/regex)
 ```
 
-This will fetch all of the dependencies and then build them, along with the
-package.
+Isso irá buscar todas as dependências e depois construí-las, 
+juntamente com o pacote.
 
 [def-package]:  ../appendix/glossary.md#package  '"package" (glossary entry)'
