@@ -7,8 +7,8 @@
     * [Primeiros Passos com o Cargo](getting-started/first-steps.md)
 
 * [Guia do Cargo](guide/index.md)
-    * [Why Cargo Exists](guide/why-cargo-exists.md)
-    * [Creating a New Package](guide/creating-a-new-project.md)
+    * [Por que o Cargo Existe](guide/why-cargo-exists.md)
+    * [Criando um Novo Pacote](guide/creating-a-new-project.md)
     * [Working on an Existing Package](guide/working-on-an-existing-project.md)
     * [Dependencies](guide/dependencies.md)
     * [Package Layout](guide/project-layout.md)

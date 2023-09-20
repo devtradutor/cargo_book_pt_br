@@ -1,16 +1,16 @@
-# Creating a New Package
+# Criando um Novo Pacote
 
-To start a new [package][def-package] with Cargo, use `cargo new`:
+Para iniciar um novo [pacote][def-package] com o Cargo, use `cargo new`
 
 ```console
 $ cargo new hello_world --bin
 ```
 
-We’re passing `--bin` because we’re making a binary program: if we
-were making a library, we’d pass `--lib`. This also initializes a new `git`
-repository by default. If you don't want it to do that, pass `--vcs none`.
+Estamos passando `--bin` porque estamos fazendo um programa binário: se nós
+ estivéssemos fazendo uma biblioteca, nós passaríamos `--lib`. Isso também inicializa um novo
+ repositório `git` por padrão. se você não quer que ele faça isso, passe `--vcs none`.
 
-Let’s check out what Cargo has generated for us:
+Vamos conferir o que o Cargo gerou para nós:
 
 ```console
 $ cd hello_world
@@ -23,7 +23,7 @@ $ tree .
 1 directory, 2 files
 ```
 
-Let’s take a closer look at `Cargo.toml`:
+Vamos dar uma olhada no `Cargo.toml`:
 
 ```toml
 [package]
@@ -35,11 +35,11 @@ edition = "2021"
 
 ```
 
-This is called a [***manifest***][def-manifest], and it contains all of the
-metadata that Cargo needs to compile your package. This file is written in the
-[TOML] format (pronounced /tɑməl/).
+Isso é chamado de [***manifest***][def-manifest], e contém todos os
+ metadados que o Cargo precisa para compilar o seu pacote. Este arquivo é escrito no formato
+ [TOML] (pronunciado /tɑməl/).
 
-Here’s what’s in `src/main.rs`:
+Aqui está o que está em `src/main.rs`:
 
 ```rust
 fn main() {
@@ -47,24 +47,22 @@ fn main() {
 }
 ```
 
-Cargo generated a “hello world” program for us, otherwise known as a
-[*binary crate*][def-crate]. Let’s compile it:
-
+O Cargo gerou um programa "hello world" para nós, também conhecido como uma
+[*crate binária*][def-crate]. Vamos compilá-lo:
 ```console
 $ cargo build
    Compiling hello_world v0.1.0 (file:///path/to/package/hello_world)
 ```
 
-And then run it:
+E então executá-lo:
 
 ```console
 $ ./target/debug/hello_world
 Hello, world!
 ```
 
-We can also use `cargo run` to compile and then run it, all in one step (You
-won't see the `Compiling` line if you have not made any changes since you last
-compiled):
+Também podemos usar `cargo run` para compilar e depois executar em um único passo (Você
+ não verá a linha `Compiling` se não tiver feito nenhuma alteração desde a última compilação):
 
 ```console
 $ cargo run
@@ -73,23 +71,21 @@ $ cargo run
 Hello, world!
 ```
 
-You’ll now notice a new file, `Cargo.lock`. It contains information about our
-dependencies. Since we don’t have any yet, it’s not very interesting.
+Agora você notará um novo arquivo, `Cargo.lock`. Ele contém informações sobre nossas dependências. 
+Como ainda não temos nenhuma, não é muito interessante neste momento.
 
-Once you’re ready for release, you can use `cargo build --release` to compile
-your files with optimizations turned on:
+Quando estiver pronto para o lançamento, você pode usar `cargo build --release` para compilar
+seus arquivos com as otimizações ativadas:
 
 ```console
 $ cargo build --release
    Compiling hello_world v0.1.0 (file:///path/to/package/hello_world)
 ```
 
-`cargo build --release` puts the resulting binary in `target/release` instead of
+O `cargo build --release` coloca o binário resultante na pasta `target/release` ao invés de
 `target/debug`.
 
-Compiling in debug mode is the default for development. Compilation time is
-shorter since the compiler doesn't do optimizations, but the code will run
-slower. Release mode takes longer to compile, but the code will run faster.
+A compilação no modo de depuração(debug) é o padrão para o desenvolvimento. O tempo de compilação é mais curto, já que o compilador não realiza otimizações, mas o código será executado mais lentamente. O modo de lançamento(release) leva mais tempo para compilar, mas o código será executado mais rápido.
 
 [TOML]: https://toml.io/
 [def-crate]:     ../appendix/glossary.md#crate     '"crate" (glossary entry)'
