@@ -1,24 +1,24 @@
 # Cargo.toml vs Cargo.lock
 
-`Cargo.toml` and `Cargo.lock` serve two different purposes. Before we talk
-about them, here’s a summary:
+`Cargo.toml` e `Cargo.lock` servem a dois propósitos diferentes. 
+Antes de falarmos sobre eles, aqui está um resumo:
 
-* `Cargo.toml` is about describing your dependencies in a broad sense, and is
-  written by you.
-* `Cargo.lock` contains exact information about your dependencies. It is
-  maintained by Cargo and should not be manually edited.
+* `Cargo.toml` descreve suas dependências em um sentido amplo e é
+  escrito por você.
+* `Cargo.lock` contém informações exatas sobre suas dependências. Isso é
+  mantido pelo Cargo e não deve ser editado manualmente.
 
-When in doubt, check `Cargo.lock` into the version control system (e.g. Git).
-For a better understanding of why and what the alternatives might be, see
-[“Why have Cargo.lock in version control?” in the FAQ](../faq.md#why-have-cargolock-in-version-control).
-We recommend pairing this with
-[Verifying Latest Dependencies](continuous-integration.md#verifying-latest-dependencies)
+Em caso de dúvida, verifique `Cargo.lock` no sistema de controle de versão (por exemplo, Git).
+Para uma melhor compreensão do por que e quais podem ser as alternativas, consulte
+["Porquê ter o Cargo.lock no controle de versão?" no FAQ](../faq.md#why-have-cargolock-in-version-control).
+Recomendamos combinar isso com 
+[Verificação das últimas dependências](continuous-integration.md#verifying-latest-dependencies)
 
-Let’s dig in a little bit more.
+Vamos aprofundar um pouco mais.
 
-`Cargo.toml` is a [**manifest**][def-manifest] file in which we can specify a
-bunch of different metadata about our package. For example, we can say that we
-depend on another package:
+O arquivo `Cargo.toml` é um arquivo [**manifesto**][def-manifest] no qual podemos especificar um
+um monte de metadados diferentes sobre nosso pacote. Por exemplo, nós podemos dizer que nós
+dependemos de outro pacote:
 
 ```toml
 [package]
@@ -29,32 +29,31 @@ version = "0.1.0"
 regex = { git = "https://github.com/rust-lang/regex.git" }
 ```
 
-This package has a single dependency, on the `regex` library. We’ve stated in
-this case that we’re relying on a particular Git repository that lives on
-GitHub. Since we haven’t specified any other information, Cargo assumes that
-we intend to use the latest commit on the default branch to build our package.
+Este pacote tem uma única dependência, na biblioteca `regex`. Nós declarámos
+este caso que estamos confiando em um repositório Git em particular que vive no
+GitHub. Como não especificamos nenhuma outra informação, o Cargo assume que
+pretendemos usar o último commit no branch padrão para construir nosso pacote.
 
-Sound good? Well, there’s one problem: If you build this package today, and
-then you send a copy to me, and I build this package tomorrow, something bad
-could happen. There could be more commits to `regex` in the meantime, and my
-build would include new commits while yours would not. Therefore, we would
-get different builds. This would be bad because we want reproducible builds.
+Parece-lhe bem? Bem, há um problema: se você construir este pacote hoje, e
+e depois enviar uma cópia para mim, e eu construir este pacote amanhã, algo mau
+pode acontecer. Poderia haver mais commits para `regex` nesse meio tempo, e minha
+compilação incluiria novos commits enquanto a sua não. Portanto, nós
+teríamos compilações diferentes. Isso seria ruim porque nós queremos compilações reproduzíveis.
 
-We could fix this problem by defining a specific `rev` value in our `Cargo.toml`,
-so Cargo could know exactly which revision to use when building the package:
+Nós poderíamos resolver esse problema definindo um valor `rev` específico no nosso `Cargo.toml`,
+para que o Cargo pudesse saber exatamente qual revisão usar ao construir o pacote:
 
 ```toml
 [dependencies]
 regex = { git = "https://github.com/rust-lang/regex.git", rev = "9f9f693" }
 ```
 
-Now our builds will be the same. But there’s a big drawback: now we have to
-manually think about SHA-1s every time we want to update our library. This is
-both tedious and error prone.
+Agora as nossas construções serão iguais. Mas há uma grande desvantagem: agora temos que
+pensar manualmente nos SHA-1s sempre que quisermos atualizar a nossa biblioteca. Isso é
+tedioso e propenso a erros.
 
-Enter the `Cargo.lock`. Because of its existence, we don’t need to manually
-keep track of the exact revisions: Cargo will do it for us. When we have a
-manifest like this:
+Agora, entramos no `Cargo.lock`. Devido à sua existência, não precisamos acompanhar manualmente 
+as revisões exatas: o Cargo fará isso por nós. Quando temos um manifesto como este:
 
 ```toml
 [package]
@@ -65,8 +64,8 @@ version = "0.1.0"
 regex = { git = "https://github.com/rust-lang/regex.git" }
 ```
 
-Cargo will take the latest commit and write that information out into our
-`Cargo.lock` when we build for the first time. That file will look like this:
+O Cargo vai pegar o último commit e escrever essa informação no nosso 
+`Cargo.lock` quando construirmos pela primeira vez. Esse arquivo será parecido com este:
 
 ```toml
 [[package]]
@@ -82,23 +81,22 @@ version = "1.5.0"
 source = "git+https://github.com/rust-lang/regex.git#9f9f693768c584971a4d53bc3c586c33ed3a6831"
 ```
 
-You can see that there’s a lot more information here, including the exact
-revision we used to build. Now when you give your package to someone else,
-they’ll use the exact same SHA, even though we didn’t specify it in our
+Pode ver que há muito mais informação aqui, incluindo a revisão exata 
+que usamos para construir. Agora, quando você der seu pacote para outra pessoa,
+ela usará exatamente o mesmo SHA, mesmo que não o tenhamos especificado em nosso
 `Cargo.toml`.
 
-When we’re ready to opt in to a new version of the library, Cargo can
-re-calculate the dependencies and update things for us:
+Quando estivermos prontos para optar por uma nova versão da biblioteca, o Cargo pode recalcular as dependências e atualizar as coisas para nós:
 
 ```console
-$ cargo update         # updates all dependencies
-$ cargo update regex   # updates just “regex”
+$ cargo update         # atualiza todas as dependências
+$ cargo update regex   # atualização apenas do “regex”
 ```
 
-This will write out a new `Cargo.lock` with the new version information. Note
-that the argument to `cargo update` is actually a
-[Package ID Specification](../reference/pkgid-spec.md) and `regex` is just a
-short specification.
+Isto irá escrever um novo `Cargo.lock` com a informação da nova versão. Note
+que o argumento para `cargo update` é na verdade uma
+[Especificação de ID do pacote](../reference/pkgid-spec.md) e `regex` é apenas uma
+especificação curta.
 
 [def-manifest]:  ../appendix/glossary.md#manifest  '"manifest" (glossary entry)'
 [def-package]:   ../appendix/glossary.md#package   '"package" (glossary entry)'
