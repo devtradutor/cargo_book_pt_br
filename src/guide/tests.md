@@ -1,13 +1,14 @@
-# Tests
+# Testes
 
-Cargo can run your tests with the `cargo test` command. Cargo looks for tests
-to run in two places: in each of your `src` files and any tests in `tests/`.
-Tests in your `src` files should be unit tests and [documentation tests].
-Tests in `tests/` should be integration-style tests. As such, you’ll need to
-import your crates into the files in `tests`.
+O Cargo pode executar seus testes com o comando `cargo test`. O Cargo procura por testes
+para executar em dois lugares: em cada um dos seus arquivos `src` e quaisquer testes em `tests/`.
+Os testes em seus arquivos `src` devem ser testes unitários e [testes de documentação][documentation tests].
+Os testes em `tests/` devem ser testes de  
+estilo de integração. Como tal, você precisará
+importar suas crates para os arquivos em `tests`.
 
-Here's an example of running `cargo test` in our [package][def-package], which
-currently has no tests:
+Aqui está um exemplo de execução do `cargo test` em nosso [pacote][def-pacote], que
+atualmente não tem testes:
 
 ```console
 $ cargo test
@@ -20,25 +21,25 @@ running 0 tests
 test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out
 ```
 
-If our package had tests, we would see more output with the correct number of
-tests.
+Se nosso pacote tivesse testes, nós veríamos mais saídas com o número correto de
+testes.
 
-You can also run a specific test by passing a filter:
+Você também pode executar um teste específico passando por um filtro:
 
 ```console
 $ cargo test foo
 ```
 
-This will run any test with `foo` in its name.
+Isto irá executar qualquer teste com `foo` em seu nome.
 
-`cargo test` runs additional checks as well. It will compile any examples
-you’ve included to ensure they still compile. It also runs documentation
-tests to ensure your code samples from documentation comments compile.
-Please see the [testing guide][testing] in the Rust documentation for a general
-view of writing and organizing tests. See [Cargo Targets: Tests] to learn more
-about different styles of tests in Cargo.
+O `cargo test` executa verificações adicionais também. Ele irá compilar quaisquer exemplos
+que você incluiu para garantir que eles ainda compilam. Ele também executa testes de documentação
+para garantir que seus exemplos de código dos comentários da documentação compilem.
+Por favor, veja o [guia de teste][testing] na documentação do Rust para uma visão geral
+ de como escrever e organizar testes. Veja [Alvos do Cargo: Testes][Cargo Targets: Tests] para saber mais
+sobre os diferentes estilos de testes no Cargo.
 
 [documentation tests]: ../../rustdoc/write-documentation/documentation-tests.html
 [def-package]:  ../appendix/glossary.md#package  '"package" (glossary entry)'
-[testing]: ../../book/ch11-00-testing.html
+[testing]: https://doc.rust-lang.org/book/ch11-00-testing.html
 [Cargo Targets: Tests]: ../reference/cargo-targets.html#tests
