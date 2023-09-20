@@ -1,35 +1,34 @@
-# Dependencies
+# Dependências
 
-[crates.io] is the Rust community's central [*package registry*][def-package-registry]
-that serves as a location to discover and download
-[packages][def-package]. `cargo` is configured to use it by default to find
-requested packages.
+[crates.io] é o [registro de pacotes][def-package-registry] central da comunidade Rust 
+que serve como um local para descobrir e baixar
+[pacotes][def-package]. O `cargo` está configurado para usá-lo por padrão para encontrar
+pacotes solicitados.
 
-To depend on a library hosted on [crates.io], add it to your `Cargo.toml`.
+Para depender de uma biblioteca hospedada no [crates.io], adicione-a ao seu `Cargo.toml`.
 
 [crates.io]: https://crates.io/
 
-## Adding a dependency
+## Adicionando uma dependência
 
-If your `Cargo.toml` doesn't already have a `[dependencies]` section, add
-that, then list the [crate][def-crate] name and version that you would like to
-use. This example adds a dependency of the `time` crate:
+Se o seu `Cargo.toml` ainda não tem uma seção `[dependencies]`,  adicione
+isso, então liste o nome e a versão do [crate][def-crate] que você gostaria de
+usar. Este exemplo adiciona uma dependência da crate `time`:
 
 ```toml
 [dependencies]
 time = "0.1.12"
 ```
 
-The version string is a [SemVer] version requirement. The [specifying
-dependencies](../reference/specifying-dependencies.md) docs have more information about
-the options you have here.
+A string de versão é um requisito de versão [SemVer]. A documentação sobre 
+[especificar dependências](../reference/specifying-dependencies.md) fornece mais informações sobre as opções disponíveis aqui.
 
 [SemVer]: https://semver.org
 
-If we also wanted to add a dependency on the `regex` crate, we would not need
-to add `[dependencies]` for each crate listed. Here's what your whole
-`Cargo.toml` file would look like with dependencies on the `time` and `regex`
-crates:
+Se também quiséssemos adicionar uma dependência no crate `regex`, não seria necessário adicionar 
+`[dependencies]` para cada crate listado. Aqui está como ficaria todo o seu arquivo 
+`Cargo.toml` com dependências das crates `time` e `regex`:
+
 
 ```toml
 [package]
@@ -42,8 +41,8 @@ time = "0.1.12"
 regex = "0.1.41"
 ```
 
-Re-run `cargo build`, and Cargo will fetch the new dependencies and all of
-their dependencies, compile them all, and update the `Cargo.lock`:
+Execute novamente `cargo build`, e o Cargo buscará as novas dependências e todas as 
+suas dependências, compilando todas elas e atualizando o `Cargo.lock`:
 
 ```console
 $ cargo build
@@ -63,13 +62,13 @@ $ cargo build
      Compiling hello_world v0.1.0 (file:///path/to/package/hello_world)
 ```
 
-Our `Cargo.lock` contains the exact information about which revision of all of
-these dependencies we used.
+Nosso `Cargo.lock` contém informações precisas sobre qual revisão 
+de todas essas dependências nós utilizamos.
 
-Now, if `regex` gets updated, we will still build with the same revision until
-we choose to `cargo update`.
+Agora, se o `regex` for atualizado, ainda construiremos com a 
+mesma revisão até que optemos por executar `cargo update`.
 
-You can now use the `regex` library in `main.rs`.
+Agora você pode usar a biblioteca `regex` no `main.rs`
 
 ```rust,ignore
 use regex::Regex;
@@ -80,7 +79,7 @@ fn main() {
 }
 ```
 
-Running it will show:
+A execução mostrará:
 
 ```console
 $ cargo run
