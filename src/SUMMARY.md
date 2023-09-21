@@ -15,8 +15,8 @@
     * [Cargo.toml vs Cargo.lock](guide/cargo-toml-vs-cargo-lock.md)
     * [Testes](guide/tests.md)
     * [Integração contínua](guide/continuous-integration.md)
-    * [Cargo Home](guide/cargo-home.md)
-    * [Build Cache](guide/build-cache.md)
+    * [Cargo Home (Casa do Cargo)](guide/cargo-home.md)
+    * [Construção de Cache](guide/build-cache.md)
 
 * [Cargo Reference](reference/index.md)
     * [Specifying Dependencies](reference/specifying-dependencies.md)
