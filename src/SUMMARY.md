@@ -14,7 +14,7 @@
     * [Layout do Pacote](guide/project-layout.md)
     * [Cargo.toml vs Cargo.lock](guide/cargo-toml-vs-cargo-lock.md)
     * [Testes](guide/tests.md)
-    * [Continuous Integration](guide/continuous-integration.md)
+    * [Integração contínua](guide/continuous-integration.md)
     * [Cargo Home](guide/cargo-home.md)
     * [Build Cache](guide/build-cache.md)
 

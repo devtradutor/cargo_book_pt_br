@@ -1,12 +1,12 @@
-# Continuous Integration
+# Integração contínua
 
-## Getting Started
+## Começando
 
-A basic CI will build and test your projects:
+Um CI básico irá construir e testar os seus projectos:
 
 ### GitHub Actions
 
-To test your package on GitHub Actions, here is a sample `.github/workflows/ci.yml` file:
+Para testar seu pacote no GitHub Actions, aqui está um exemplo de arquivo `.github/workflows/ci.yml`:
 
 ```yaml
 name: Cargo Build & Test
@@ -36,11 +36,11 @@ jobs:
   
 ```
 
-This will test all three release channels (note a failure in any toolchain version will fail the entire job). You can also click `"Actions" > "new workflow"` in the GitHub UI and select Rust to add the [default configuration](https://github.com/actions/starter-workflows/blob/main/ci/rust.yml) to your repo. See [GitHub Actions documentation](https://docs.github.com/en/actions) for more information.
+Isso testará todos os três canais de lançamento (observe que uma falha em qualquer versão do toolchain resultará na falha do trabalho inteiro). Você também pode clicar em `"Actions" > "new workflow"` na interface do GitHub e selecionar Rust para adicionar a [configuração padrão](https://github.com/actions/starter-workflows/blob/main/ci/rust.yml) ao seu repositório. Consulte a [documentação do GitHub Actions](https://docs.github.com/en/actions) para obter mais informações.
 
 ### GitLab CI
 
-To test your package on GitLab CI, here is a sample `.gitlab-ci.yml` file:
+Para testar seu pacote no GitLab Ci, aqui está um exemplo no arquivo `.gitlab-ci.yml`
 
 ```yaml
 stages:
@@ -62,84 +62,84 @@ rust-nightly:
   allow_failure: true
 ```
 
-This will test on the stable channel and nightly channel, but any
-breakage in nightly will not fail your overall build. Please see the
-[GitLab CI documentation](https://docs.gitlab.com/ce/ci/yaml/index.html) for more
-information.
+Isso será testado no canal estável e no canal noturno, mas qualquer
+quebra no nightly não falhará sua compilação geral. Por favor, veja a
+[Documentação do GitLab CI](https://docs.gitlab.com/ce/ci/yaml/index.html) para mais
+informações.
 
 ### builds.sr.ht
 
-To test your package on sr.ht, here is a sample `.build.yml` file.
-Be sure to change `<your repo>` and `<your project>` to the repo to clone and
-the directory where it was cloned.
+Para testar seu pacote no sr.ht, aqui está um exemplo de arquivo `.build.yml`.
+Certifique-se de mudar `<seu repo>` e `<seu projeto>` para o repo a ser clonado e
+o diretório onde ele foi clonado.
 
 ```yaml
 image: archlinux
 packages:
   - rustup
 sources:
-  - <your repo>
+  - <seu repo>
 tasks:
   - setup: |
       rustup toolchain install nightly stable
-      cd <your project>/
+      cd <seu projeto>/
       rustup run stable cargo fetch
   - stable: |
       rustup default stable
-      cd <your project>/
+      cd <seu projeto>/
       cargo build --verbose
       cargo test --verbose
   - nightly: |
       rustup default nightly
-      cd <your project>/
+      cd <seu projeto>/
       cargo build --verbose ||:
       cargo test --verbose  ||:
   - docs: |
-      cd <your project>/
+      cd <seu projeto>/
       rustup run stable cargo doc --no-deps
       rustup run nightly cargo doc --no-deps ||:
 ```
 
-This will test and build documentation on the stable channel and nightly
-channel, but any breakage in nightly will not fail your overall build. Please
-see the [builds.sr.ht documentation](https://man.sr.ht/builds.sr.ht/) for more
-information.
+Isto irá testar e construir a documentação no canal estável e no canal noturno
+mas qualquer quebra no nightly não falhará sua compilação geral. Por favor
+veja a [documentação builds.sr.ht](https://man.sr.ht/builds.sr.ht/) para mais
+informações.
 
-## Verifying Latest Dependencies
+## Verificação das dependências mais recentes
 
-When [specifying dependencies](../reference/specifying-dependencies.md) in
-`Cargo.toml`, they generally match a range of versions.
-Exhaustively testing all version combination would be unwieldy.
-Verifying the latest versions would at least test for users who run [`cargo
-add`] or [`cargo install`].
+Quando [especificando dependências](../reference/specifying-dependencies.md) no
+`Cargo.toml`, elas geralmente correspondem a uma gama de versões.
+Testar exaustivamente todas as combinações de versões seria muito complicado.
+Verificar as últimas versões pelo menos testaria os usuários que executam [`cargo
+add`] ou [`cargo install`].
 
-When testing the latest versions some considerations are:
-- Minimizing external factors affecting local development or CI
-- Rate of new dependencies being published
-- Level of risk a project is willing to accept
-- CI costs, including indirect costs like if a CI service has a maximum for
-  parallel runners, causing new jobs to be serialized when at the maxium.
+Ao testar as versões mais recentes, algumas considerações são:
+- Minimizar fatores externos que afetam o desenvolvimento local ou CI.
+- Taxa de novas dependências sendo publicadas.
+- Nível de risco que um projeto está disposto a aceitar.
+- Custos de CI, incluindo custos indiretos, como se um serviço de CI tiver um limite 
+  máximo para executores em paralelo, o que faz com que novos trabalhos sejam serializados quando atingem o máximo.
 
-Some potential solutions include:
-- [Not checking in the `Cargo.lock`](../faq.md#why-have-cargolock-in-version-control)
-  - Depending on PR velocity, many versions may go untested
-  - This comes at the cost of determinism
-- Have a CI job verify the latest dependencies but mark it to "continue on failure"
-  - Depending on the CI service, failures might not be obvious
-  - Depending on PR velocity, may use more resources than necessary
-- Have a scheduled CI job to verify latest dependencies
-  - A hosted CI service may disable scheduled jobs for repositories that
-    haven't been touched in a while, affecting passively maintained packages
-  - Depending on the CI service, notifications might not be routed to people
-    who can act on the failure
-  - If not balanced with dependency publish rate, may not test enough versions
-    or may do redundant testing
-- Regularly update dependencies through PRs, like with [Dependabot] or [RenovateBot]
-  - Can isolate dependencies to their own PR or roll them up into a single PR
-  - Only uses the resources necessary
-  - Can configure the frequency to balance CI resources and coverage of dependency versions
+Algumas soluções possíveis incluem:
+- [Não verificando o `Cargo.lock`](../faq.md#why-have-cargolock-in-version-control)
+  - Dependendo da velocidade do PR, muitas versões podem não ser testadas
+  - Isso vem com o custo de determinismo.
+- Ter um trabalho de CI para verificar as dependências mais recentes, mas marcá-lo para "continuar em caso de falha".
+  - Dependendo do serviço de CI, as falhas podem não ser óbvias.
+  - Dependendo da velocidade dos PR, pode utilizar mais recursos do que o necessário.
+- Ter uma tarefa de CI agendada para verificar as dependências mais recentes
+  - Um serviço de CI hospedado pode desabilitar trabalhos agendados para repositórios que
+    não tenham sido tocados há algum tempo, afetando pacotes mantidos passivamente
+  - Dependendo do serviço de CI, as notificações podem não ser encaminhadas para as pessoas
+    que possam atuar sobre a falha
+  - Se não for equilibrado com a taxa de publicação de dependências, pode não testar versões suficientes
+    ou pode efetuar testes redundantes
+- Atualizar regularmente as dependências através de PRs, como com [Dependabot] ou [RenovateBot]
+  - Pode isolar dependências para o seu próprio PR ou juntá-las num único PR
+  - Só utiliza os recursos necessários
+  - Pode configurar a frequência para equilibrar os recursos de CI e a cobertura das versões de dependência
 
-An example CI job to verify latest dependencies, using GitHub Actions:
+Um exemplo de trabalho de CI para verificar as dependências mais recentes, usando GitHub Actions:
 ```yaml
 jobs:
   latest_deps:
@@ -153,8 +153,8 @@ jobs:
       - run: cargo build --verbose
       - run: cargo test --verbose
 ```
-For projects with higher risks of per-platform or per-Rust version failures,
-more combinations may want to be tested.
+Para projetos com maior risco de falhas por plataforma ou por versão do Rust, 
+pode ser necessário testar mais combinações.
 
 [`cargo add`]: ../commands/cargo-add.md
 [`cargo install`]: ../commands/cargo-install.md
