@@ -1,66 +1,65 @@
-# Cargo Home
+# Cargo Home (Casa do Cargo)
 
-The "Cargo home" functions as a download and source cache.
-When building a [crate][def-crate], Cargo stores downloaded build dependencies in the Cargo home.
-You can alter the location of the Cargo home by setting the `CARGO_HOME` [environmental variable][env].
-The [home](https://crates.io/crates/home) crate provides an API for getting this location if you need this information inside your Rust crate.
-By default, the Cargo home is located in `$HOME/.cargo/`.
+O "Cargo home" funciona como um cache de download e fonte. 
+Ao construir uma [crate][def-crate], o Cargo armazena as dependências de compilação baixadas no Cargo home.
+Você pode alterar o local do Cargo home definindo a [variável de ambiente][env] `CARGO_HOME`. 
+O [crate](https://crates.io/crates/home) fornece uma API para obter essa localização, caso você precise dessa informação dentro do seu crate Rust. 
+Por padrão, o Cargo home está localizado em `$HOME/.cargo/`.
 
-Please note that the internal structure of the Cargo home is not stabilized and may be subject to change at any time.
+Por favor, observe que a estrutura interna do Cargo home não está estabilizada e pode estar sujeita a alterações a qualquer momento.
 
-The Cargo home consists of following components:
+O Cargo home consiste nos seguintes componentes:
 
-## Files:
+## Arquivos:
 
 * `config.toml`
-	Cargo's global configuration file, see the [config entry in the reference][config].
-
+    Arquivo de configuração global do Cargo, consulte a [entrada de configuração na referência][config].
 * `credentials.toml`
- 	Private login credentials from [`cargo login`] in order to log in to a [registry][def-registry].
+    Credenciais de login privadas geradas pelo [`cargo login`] para fazer login em um [registro][def-registry].
 
 * `.crates.toml`, `.crates2.json`
-	These hidden files contain [package][def-package] information of crates installed via [`cargo install`]. Do NOT edit by hand!
+    Esses arquivos ocultos contêm informações de [pacote][def-package] de crates instalados via [`cargo install`]. NÃO edite manualmente!
 
-## Directories:
+## Diretórios:
 
 * `bin`
-The bin directory contains executables of crates that were installed via [`cargo install`] or [`rustup`](https://rust-lang.github.io/rustup/).
-To be able to make these binaries accessible, add the path of the directory to your `$PATH` environment variable.
+O diretório bin contém executáveis das crates que foram instaladas via [`cargo install`] ou [`rustup`](https://rust-lang.github.io/rustup/). 
+Para tornar esses binários acessíveis, adicione o caminho do diretório à variável de ambiente `$PATH`.
 
  *  `git`
-	Git sources are stored here:
+	As fontes do Git são armazenadas aqui:
 
     * `git/db`
-		When a crate depends on a git repository, Cargo clones the repo as a bare repo into this directory and updates it if necessary.
+		Quando uma crate depende de um repositório Git, o Cargo clona o repositório como um repositório nu (bare) neste diretório e o atualiza, se necessário.
 
     * `git/checkouts`
-		If a git source is used, the required commit of the repo is checked out from the bare repo inside `git/db` into this directory.
-		This provides the compiler with the actual files contained in the repo of the commit specified for that dependency.
-		Multiple checkouts of different commits of the same repo are possible.
+		Se uma fonte Git for usada, o commit necessário do repositório é verificado a partir do repositório nu (bare) dentro de `git/db` para este diretório.
+		Isso fornece ao compilador os arquivos reais contidos no repositório do commit especificado para essa dependência. 
+		Múltiplos checkouts de commits diferentes do mesmo repositório são possíveis.
 
 * `registry`
-	Packages and metadata of crate registries (such as [crates.io](https://crates.io/)) are located here.
+	Os pacotes e metadados de registros de crates (como [crates.io](https://crates.io/)) estão localizados aqui.
 
   * `registry/index`
-		The index is a bare git repository which contains the metadata (versions, dependencies etc) of all available crates of a registry.
+		O índice é um repositório Git nu (bare) que contém os metadados (versões, dependências etc) de todas as crates disponíveis em um registro.
 
   *  `registry/cache`
-		Downloaded dependencies are stored in the cache. The crates are compressed gzip archives named with a `.crate` extension.
+		As dependências baixadas são armazenadas no cache. As crates são arquivos compactados no formato gzip com a extensão `.crate`.
 
   * `registry/src`
-		If a downloaded `.crate` archive is required by a package, it is unpacked into `registry/src` folder where rustc will find the `.rs` files.
+		Se um arquivo `.crate` baixado for necessário por um pacote, ele é descompactado na pasta `registry/src`, onde o rustc encontrará os arquivos `.rs`.
 
 
-## Caching the Cargo home in CI
+## Armazenamento em cache do Cargo home em CI
 
-To avoid redownloading all crate dependencies during continuous integration, you can cache the `$CARGO_HOME` directory.
-However, caching the entire directory is often inefficient as it will contain downloaded sources twice.
-If we depend on a crate such as `serde 1.0.92` and cache the entire `$CARGO_HOME` we would actually cache the sources twice, the `serde-1.0.92.crate` inside `registry/cache` and the extracted `.rs` files of serde inside `registry/src`.
-That can unnecessarily slow down the build as downloading, extracting, recompressing and reuploading the cache to the CI servers can take some time.
+Para evitar o redownload de todas as dependências das crates durante a integração contínua, você pode fazer cache do diretório `$CARGO_HOME`.
+No entanto, fazer cache de todo o diretório frequentemente é ineficiente, já que ele conterá as fontes baixadas duas vezes.
+Se dependermos de uma crate como `serde 1.0.92` e fizermos cache de todo o `$CARGO_HOME`, na verdade estaríamos fazendo cache das fontes duas vezes, o arquivo `serde-1.0.92.crate` dentro de `registry/cache` e os arquivos `.rs` extraídos do serde dentro de `registry/src`.
+Isto pode atrasar desnecessariamente a construção, uma vez que baixar, extrair, recomprimir e reenviar o cache para os servidores do CI pode levar algum tempo.
 
-If you wish to cache binaries installed with [`cargo install`], you need to cache the `bin/` folder and the `.crates.toml` and `.crates2.json` files.
+Se desejar fazer cache de binários instalados com [`cargo install`], você precisa fazer cache da pasta `bin/` e dos arquivos `.crates.toml` e `.crates2.json`.
 
-It should be sufficient to cache the following files and directories across builds:
+Deve ser suficiente fazer cache dos seguintes arquivos e diretórios em todas as compilações:
 
 * `.crates.toml`
 * `.crates2.json`
@@ -71,17 +70,17 @@ It should be sufficient to cache the following files and directories across buil
 
 
 
-## Vendoring all dependencies of a project
+## Fornecendo todas as dependências de um projeto
 
-See the [`cargo vendor`] subcommand.
+Veja o subcomando [`cargo vendor`].
 
 
 
-## Clearing the cache
+## Limpando o cache
 
-In theory, you can always remove any part of the cache and Cargo will do its best to restore sources if a crate needs them either by reextracting an archive or checking out a bare repo or by simply redownloading the sources from the web.
+Em teoria, você sempre pode remover qualquer parte do cache, e o Cargo fará o melhor possível para restaurar as fontes se uma crate precisar delas, seja reextraindo um arquivo ou verificando um repositório nu ou simplesmente redownload das fontes da web.
 
-Alternatively, the [cargo-cache](https://crates.io/crates/cargo-cache) crate provides a simple CLI tool to only clear selected parts of the cache or show sizes of its components in your command-line.
+Alternativamente, a crate [cargo-cache](https://crates.io/crates/cargo-cache) fornece uma ferramenta CLI simples para limpar apenas partes selecionadas do cache ou mostrar os tamanhos de seus componentes na linha de comando.
 
 [`cargo install`]: ../commands/cargo-install.md
 [`cargo login`]: ../commands/cargo-login.md

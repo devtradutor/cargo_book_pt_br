@@ -11,5 +11,5 @@ Este guia lhe dará tudo o que você precisa saber sobre como usar o Cargo
 * [Cargo.toml vs Cargo.lock](cargo-toml-vs-cargo-lock.md)
 * [Testes](tests.md)
 * [Integração contínua](continuous-integration.md)
-* [Casa do Cargo (Cargo Home)](cargo-home.md)
+* [Cargo Home (Casa do Cargo)](cargo-home.md)
 * [Construção de Cache](build-cache.md)
