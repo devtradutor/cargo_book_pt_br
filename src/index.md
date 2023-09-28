@@ -4,29 +4,6 @@
 
 Cargo é o [*gerenciador de pacotes*][def-package-manager] do [Rust]. O Cargo baixa as dependências do seu [pacote][def-package] Rust, compila seus pacotes, cria pacotes distribuíveis e os envia para o [crates.io], os [*repositório de pacotes*][def-package-registry] da comunidade Rust. 
 
-<div class="box" >
-  <div class="alert">
-    <span>Aviso</span> 
-  <p>
-    Se você quiser acompanhar a documentação oficial <a class="link" href="https://github.com/rust-lang/cargo/tree/master/src/doc" >click aqui</a>.
-  </p>
-  </div>
-</div>
-
-<div class="box" >
-  <div class="alert">
-  <p>
-   Está é uma simples mensagem pedindo para você que esta acompanhando esta tradução a poiar nosso projeto doando ou contribuindo com o projeto
-  </p>
-  <p>
-    Para doar é bem simples copie a chave do pix <span>devtradutor@gmail.com</span> e doe pode ser qualquer valor que já é uma grande ajuda para nos.
-  </p>
-  <p>
-    Muito obrigado pela atenção e que deus te abençoe e que você tenha uma boa leitura.
-  </p>
-  </div>
-</div>
-
 ## Seções {#sections}
 
 **[Começando](getting-started/index.md)**
