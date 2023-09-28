@@ -1,38 +1,33 @@
-# Specifying Dependencies
+# Especificando Dependências
 
-Your crates can depend on other libraries from [crates.io] or other
-registries, `git` repositories, or subdirectories on your local file system.
-You can also temporarily override the location of a dependency --- for example,
-to be able to test out a bug fix in the dependency that you are working on
-locally. You can have different dependencies for different platforms, and
-dependencies that are only used during development. Let's take a look at how
-to do each of these.
+Seus crates podem depender de outras bibliotecas do [crates.io] ou de outros
+registros, repositórios `git`, ou subdiretórios em seu sistema de arquivos local.
+Você também pode temporariamente substituir a localização de uma dependência --- por exemplo,
+para testar uma correção de bug na dependência em que você está trabalhando
+localmente. Você pode ter diferentes dependências para plataformas diferentes e
+dependências que são usadas apenas durante o desenvolvimento. Vamos dar uma olhada em como
+fazer cada uma dessas coisas.
 
-## Specifying dependencies from crates.io
+## Especificando dependências do crates.io
 
-Cargo is configured to look for dependencies on [crates.io] by default. Only
-the name and a version string are required in this case. In [the cargo
-guide](../guide/index.md), we specified a dependency on the `time` crate:
+O Cargo é configurado para procurar dependências no [crates.io] por padrão. Nesse caso, apenas
+o nome e uma sequência de versão são necessários. No [guia do cargo](../guide/index.md), especificamos
+uma dependência com a crate `time`:
 
 ```toml
 [dependencies]
 time = "0.1.12"
 ```
 
-The string `"0.1.12"` is a version requirement. Although it looks like a
-specific *version* of the `time` crate, it actually specifies a *range* of
-versions and allows [SemVer] compatible updates. An update is allowed if the new
-version number does not modify the left-most non-zero number in the major, minor,
-patch grouping. In this case, if we ran `cargo update time`, cargo should
-update us to version `0.1.13` if it is the latest `0.1.z` release, but would not
-update us to `0.2.0`. If instead we had specified the version string as `1.0`,
-cargo should update to `1.1` if it is the latest `1.y` release, but not `2.0`.
-The version `0.0.x` is not considered compatible with any other version.
+A string `"0.1.12"` é um requisito de versão. 
+Embora pareça ser uma *versão* específica da crate `time`, na verdade especifica um *intervalo* de versões e permite atualizações compatíveis com o [SemVer]. 
+Uma atualização é permitida se o número da nova versão não modificar o número não-zero mais à esquerda no agrupamento de major, minor e patch. 
+Neste caso, se executássemos `cargo update time`, o Cargo deveria nos atualizar para a versão `0.1.13` se esta for a versão mais recente da série `0.1.z`, mas não nos atualizaria para `0.2.0`. Se em vez disso tivéssemos especificado a sequência de versão como `1.0`, o Cargo deveria atualizar para `1.1` se esta fosse a versão mais recente da série `1.y`, mas não para `2.0`. A versão `0.0.x` não é considerada compatível com qualquer outra versão.
 
 [SemVer]: https://semver.org
 
-Here are some more examples of version requirements and the versions that would
-be allowed with them:
+Aqui estão mais alguns exemplos de requisitos de versão e as versões que seriam
+ser permitido com eles:
 
 ```notrust
 1.2.3  :=  >=1.2.3, <2.0.0
@@ -45,67 +40,59 @@ be allowed with them:
 0      :=  >=0.0.0, <1.0.0
 ```
 
-This compatibility convention is different from SemVer in the way it treats
-versions before 1.0.0. While SemVer says there is no compatibility before
-1.0.0, Cargo considers `0.x.y` to be compatible with `0.x.z`, where `y ≥ z`
-and `x > 0`.
+Esta convenção de compatibilidade é diferente do SemVer 
+na forma como trata as versões anteriores a 1.0.0. Enquanto o SemVer diz que não há compatibilidade antes de 1.0.0, 
+o Cargo considera que `0.x.y` é compatível com `0.x.z`, onde `y ≥ z` e `x > 0`.
 
-It is possible to further tweak the logic for selecting compatible versions
-using special operators, though it shouldn't be necessary most of the time.
+É possível ajustar ainda mais a lógica para selecionar versões compatíveis usando operadores especiais, 
+embora na maioria das vezes isso não seja necessário.
 
-## Version requirement syntax
+## Sintaxe de requisito de versão
 
-### Caret requirements
+### Requisitos de acento (caret)
 
-**Caret requirements** are the default version requirement strategy. 
-This version strategy allows [SemVer] compatible updates.
-They are specified as version requirements with a leading caret (`^`).
+**Requisitos de acento (caret requirements)** são a estratégia padrão de requisitos de versão. 
+Esta estratégia de versão permite atualizações compatíveis com o [SemVer]. 
+Eles são especificados como requisitos de versão com um acento (^) na frente.
 
-`^1.2.3` is an example of a caret requirement.
+`^1.2.3` é um exemplo de um requisito de acento (caret requirement). 
 
-Leaving off the caret is a simplified equivalent syntax to using caret requirements.
-While caret requirements are the default, it is recommended to use the
-simplified syntax when possible.
+Deixar de fora o acento (^) é uma sintaxe equivalente simplificada para usar requisitos de acento.
+Embora os requisitos de acento sejam o padrão, é recomendável usar a sintaxe simplificada sempre que possível.
 
-`log = "^1.2.3"` is exactly equivalent to `log = "1.2.3"`.
+`log = "^1.2.3"` é exatamente equivalente a `log = "1.2.3"`.
 
-### Tilde requirements
+### Requisitos com Tilde
 
-**Tilde requirements** specify a minimal version with some ability to update.
-If you specify a major, minor, and patch version or only a major and minor
-version, only patch-level changes are allowed. If you only specify a major
-version, then minor- and patch-level changes are allowed.
+Os **requisitos com tilde** especificam uma versão mínima com alguma capacidade de atualização. 
+Se você especificar uma versão de grande, médio e pequeno porte, ou apenas uma versão de grande e médio porte, somente as alterações de nível de pequeno porte são permitidas. 
+Se você especificar apenas uma versão de grande porte, então as alterações de médio e pequeno porte também são permitidas.
 
-`~1.2.3` is an example of a tilde requirement.
-
+`~1.2.3` é um exemplo de um requisito com tilde.
 ```notrust
 ~1.2.3  := >=1.2.3, <1.3.0
 ~1.2    := >=1.2.0, <1.3.0
 ~1      := >=1.0.0, <2.0.0
 ```
 
-### Wildcard requirements
+### Requisitos com Asterisco
 
-**Wildcard requirements** allow for any version where the wildcard is
-positioned.
+Os **requisitos com asterisco** permitem qualquer versão em que o asterisco esteja posicionado.
 
-`*`, `1.*` and `1.2.*` are examples of wildcard requirements.
-
+`*`, `1.*` e `1.2.*` são exemplos de requisitos com asterisco.
 ```notrust
 *     := >=0.0.0
 1.*   := >=1.0.0, <2.0.0
 1.2.* := >=1.2.0, <1.3.0
 ```
 
-> **Note**: [crates.io] does not allow bare `*` versions.
+> **Observação**: [crates.io] não permite versões com apenas o asterisco (`*`).
 
-### Comparison requirements
+### Requisitos de Comparação
 
-**Comparison requirements** allow manually specifying a version range or an
-exact version to depend on.
+Os **requisitos de comparação** permitem especificar manualmente um intervalo de versões ou uma versão exata para depender.
 
-Here are some examples of comparison requirements:
-
+Aqui estão alguns exemplos de requisitos de comparação:
 ```notrust
 >= 1.2.0
 > 1
@@ -113,178 +100,119 @@ Here are some examples of comparison requirements:
 = 1.2.3
 ```
 
-### Multiple version requirements
+### Requisitos de múltiplas versões
 
-As shown in the examples above, multiple version requirements can be
-separated with a comma, e.g., `>= 1.2, < 1.5`.
+Conforme mostrado nos exemplos acima, é possível separar múltiplos requisitos de versão com uma vírgula, por exemplo, `>= 1.2, < 1.5`.
 
-> **Recommendation:** When in doubt, use the default version requirement operator.
+> **Recomendação:** Quando em dúvida, use o operador de requisito de versão padrão.
+
 >
-> In rare circumstances, a package with a "public dependency"
-> (re-exports the dependency or interoperates with it in its public API)
-> that is compatible with multiple semver-incompatible versions
-> (e.g. only uses a simple type that hasn't changed between releases, like an `Id`)
-> may support users choosing which version of the "public dependency" to use.
-> In this case, a version requirement like `">=0.4, <2"` may be of interest.
-> *However* users of the package will likely run into errors and need to to
-> manually select a version of the "public dependency" via `cargo update` if
-> they also depend on it as Cargo might pick different versions of the "public
-> dependency" when [resolving dependency versions](resolver.md)  (see
-> [#10599]).
+> Em circunstâncias raras, um pacote com uma "dependência pública" (que reexporta a dependência ou interage com ela em sua API pública)
+> que seja compatível com várias versões incompatíveis de acordo com o SemVer (por exemplo, usa apenas um tipo simples que não mudou entre as versões, como um `Id`) 
+> pode permitir que os usuários escolham qual versão da "dependência pública" usar. Nesse caso, um requisito de versão como `">=0.4, <2"` pode ser de interesse. 
+> No entanto, os usuários do pacote provavelmente encontrarão erros e precisarão selecionar manualmente uma versão da "dependência pública" via `cargo update` se também dependerem dela, 
+> já que o Cargo pode escolher diferentes versões da "dependência pública" ao [resolver as versões de dependências](resolver.md) (consulte [#10599]).
 >
-> Avoid constraining the upper bound of a version to be anything less than the
-> next semver incompatible version
-> (e.g. avoid `">=2.0, <2.4"`) as other packages in the dependency tree may
-> require a newer version, leading to an unresolvable error (see #6584).
-> Consider whether controlling the version in your [`Cargo.lock`] would be more
-> appropriate.
->
-> In some instances this won't matter or the benefits might outweigh the cost, including:
-> - When no one else depends on your package e.g. it only has a `[[bin]]`
-> - When depending on a pre-release package and wishing to avoid breaking
->   changes then a fully specified `"=1.2.3-alpha.3"` might be warranted (see
->   [#2222])
-> - When a library re-exports a proc-macro but the proc-macro generates code that
->   calls into the re-exporting library then a fully specified `=1.2.3` might be
->   warranted to ensure the proc-macro isn't newer than the re-exporting library
->   and generating code that uses parts of the API that don't exist within the
->   current version
+> Evite restringir o limite superior de uma versão a qualquer coisa menor do que a próxima versão incompatível com o SemVer (por exemplo, evite `">=2.0, <2.4"`) pois outros pacotes na árvore de dependências podem exigir uma versão mais recente, o que levaria a um erro insolucionável (consulte #6584). Considere se controlar a versão em seu [`Cargo.lock`] seria mais apropriado.
+> 
+> Em algumas instâncias, isso pode não importar ou os benefícios podem superar os custos, incluindo:
+> - Quando ninguém mais depende do seu pacote, por exemplo, se ele tiver apenas um `[[bin]]`.
+> - Ao depender de um pacote de pré-lançamento e desejar evitar mudanças que quebrem a compatibilidade, uma especificação completa como `"=1.2.3-alpha.3"` pode ser justificada (consulte [#2222]).
+> - Quando uma biblioteca reexporta um proc-macro, mas o proc-macro gera código que chama a biblioteca que o reexporta, então uma especificação completa `=1.2.3` 
+> pode ser justificada para garantir que o proc-macro não seja mais recente do que a biblioteca que o reexporta e gerando código que usa partes da API que não existem na versão atual.
 
 [`Cargo.lock`]: ../guide/cargo-toml-vs-cargo-lock.md
 [#2222]: https://github.com/rust-lang/cargo/issues/2222
 [#6584]: https://github.com/rust-lang/cargo/issues/6584
 [#10599]: https://github.com/rust-lang/cargo/issues/10599
 
-## Specifying dependencies from other registries
+## Especificando dependências de outros registros
 
-To specify a dependency from a registry other than [crates.io], first the
-registry must be configured in a `.cargo/config.toml` file. See the [registries
-documentation] for more information. In the dependency, set the `registry` key
-to the name of the registry to use.
+Para especificar uma dependência de um registro que não seja o [crates.io], 
+primeiro o registro deve ser configurado em um arquivo `.cargo/config.toml`. Consulte a [documentação de registros][registries documentation] para obter mais informações. 
+Na dependência, defina a chave `registry` com o nome do registro a ser usado.
 
 ```toml
 [dependencies]
 some-crate = { version = "1.0", registry = "my-registry" }
 ```
 
-> **Note**: [crates.io] does not allow packages to be published with
-> dependencies on code published outside of [crates.io].
+> **Nota**: [crates.io] não permite que pacotes sejam publicados com dependências em código publicado fora do [crates.io].
 
 [registries documentation]: registries.md
 
-## Specifying dependencies from `git` repositories
+## Especificando Dependências a partir de repositórios `git`
 
-To depend on a library located in a `git` repository, the minimum information
-you need to specify is the location of the repository with the `git` key:
+Para depender de uma biblioteca localizada em um repositório `git`, a informação mínima que você precisa especificar é a localização do repositório com a chave `git`:
 
 ```toml
 [dependencies]
 regex = { git = "https://github.com/rust-lang/regex.git" }
 ```
+O Cargo buscará o repositório `git` nessa localização e, em seguida, procurará um arquivo `Cargo.toml` para a crate solicitada em qualquer lugar dentro do repositório `git` 
+(não necessariamente na raiz - por exemplo, especificar o nome de uma crate membro em um espaço de trabalho e definir `git` como o repositório que contém o espaço de trabalho).
 
-Cargo will fetch the `git` repository at this location then look for a
-`Cargo.toml` for the requested crate anywhere inside the `git` repository
-(not necessarily at the root --- for example, specifying a member crate name
-of a workspace and setting `git` to the repository containing the workspace).
-
-Since we haven’t specified any other information, Cargo assumes that
-we intend to use the latest commit on the default branch to build
-our package, which may not necessarily be the main branch.
-You can combine the `git` key with the `rev`, `tag`, or `branch` keys to
-specify something else. Here's an example of specifying that you want to use
-the latest commit on a branch named `next`:
+Como não especificamos nenhuma outra informação, o Cargo assume que pretendemos usar o commit mais recente no branch padrão para construir nosso pacote, que pode não ser necessariamente o branch principal. 
+Você pode combinar a chave `git` com as chaves `rev`, `tag` ou `branch` para especificar algo diferente. 
+Aqui está um exemplo de especificação para usar o commit mais recente em um branch chamado `next`:
 
 ```toml
 [dependencies]
 regex = { git = "https://github.com/rust-lang/regex.git", branch = "next" }
 ```
 
-Anything that is not a branch or tag falls under `rev`. This can be a commit
-hash like `rev = "4c59b707"`, or a named reference exposed by the remote
-repository such as `rev = "refs/pull/493/head"`. What references are available
-varies by where the repo is hosted; GitHub in particular exposes a reference to
-the most recent commit of every pull request as shown, but other git hosts often
-provide something equivalent, possibly under a different naming scheme.
+Qualquer coisa que não seja um branch ou tag cai na categoria `rev`. Isso pode ser um hash de commit, como `rev = "4c59b707"`, ou uma referência nomeada exposta pelo repositório remoto, como `rev = "refs/pull/493/head"`. 
+As referências disponíveis variam dependendo de onde o repositório está hospedado; o GitHub, em particular, expõe uma referência para o commit mais recente de cada pull request, 
+como mostrado, mas outros hosts de git frequentemente fornecem algo equivalente, possivelmente sob um esquema de nomenclatura diferente.
 
-Once a `git` dependency has been added, Cargo will lock that dependency to the
-latest commit at the time. New commits will not be pulled down automatically
-once the lock is in place. However, they can be pulled down manually with
-`cargo update`.
+Depois que uma dependência `git` for adicionada, o Cargo irá travar essa dependência no commit mais recente naquele momento. 
+Novos commits não serão baixados automaticamente depois que o travamento estiver em vigor. No entanto, eles podem ser baixados manualmente com o comando `cargo update`.
 
-See [Git Authentication] for help with git authentication for private repos.
+Consulte [Autenticação Git](../appendix/git-authentication.md) para obter ajuda com autenticação git para repositórios privados.
 
-> **Note**: Neither the `git` key nor the `path` key changes the meaning of the
-> `version` key: the `version` key always implies that the package is available
-> in a registry. `version`, `git`, and `path` keys are considered [separate
-> locations](#multiple-locations) for resolving the dependency.
->
-> When the dependency is retrieved from `git`, the `version` key will _not_
-> affect which commit is used, but the version information in the dependency's
-> `Cargo.toml` file will still be validated against the `version` requirement.
+> **Nota**: Nem a chave `git` nem a chave `path` alteram o significado da chave `version`: a chave `version` sempre implica que o pacote está disponível em um registro. As chaves `version`, `git` e `path` são consideradas [locais separados](#multiple-locations) para resolver a dependência.
 
-> **Note**: [crates.io] does not allow packages to be published with
-> dependencies on code published outside of [crates.io] itself
-> ([dev-dependencies] are ignored). See the [Multiple
-> locations](#multiple-locations) section for a fallback alternative for `git`
-> and `path` dependencies.
+> Quando a dependência é obtida a partir do `git`, a chave `version` _não_ afetará qual commit é usado, mas as informações de versão no arquivo `Cargo.toml` da dependência ainda serão validadas em relação ao requisito de `version`.
 
-[Git Authentication]: ../appendix/git-authentication.md
+> **Nota**: O [crates.io] não permite que pacotes sejam publicados com dependências em código publicado fora de [crates.io] em si ([dev-dependencies] são ignoradas). Consulte a seção [Múltiplos locais](#multiple-locations) para uma alternativa de fallback para dependências `git` e `path`.
 
-## Specifying path dependencies
 
-Over time, our `hello_world` package from [the guide](../guide/index.md) has
-grown significantly in size! It’s gotten to the point that we probably want to
-split out a separate crate for others to use. To do this Cargo supports **path
-dependencies** which are typically sub-crates that live within one repository.
-Let’s start off by making a new crate inside of our `hello_world` package:
+## Especificando dependências de caminho
+
+Com o tempo, nosso pacote `hello_world` do [guia](../guide/index.md) cresceu significativamente em tamanho! Chegou ao ponto em que provavelmente queremos separar uma crate separada para que outros a utilizem. Para fazer isso, o Cargo oferece suporte às **dependências de caminho**, que são normalmente sub-crates que residem dentro de um único repositório. Vamos começar criando uma nova crate dentro do nosso pacote `hello_world`:
 
 ```console
-# inside of hello_world/
+# dentro do hello_world/
 $ cargo new hello_utils
 ```
 
-This will create a new folder `hello_utils` inside of which a `Cargo.toml` and
-`src` folder are ready to be configured. In order to tell Cargo about this, open
-up `hello_world/Cargo.toml` and add `hello_utils` to your dependencies:
+Isso criará uma nova pasta `hello_utils`, dentro da qual um `Cargo.toml` e uma pasta `src` estão prontos para serem configurados. 
+Para informar ao Cargo sobre isso, abra o `Cargo.toml` de `hello_world` e adicione `hello_utils` às suas dependências:
 
 ```toml
 [dependencies]
 hello_utils = { path = "hello_utils" }
 ```
 
-This tells Cargo that we depend on a crate called `hello_utils` which is found
-in the `hello_utils` folder (relative to the `Cargo.toml` it’s written in).
+Isso informa ao Cargo que dependemos de uma crate chamada `hello_utils` que é encontrada na pasta `hello_utils` (relativa ao `Cargo.toml` no qual está escrito).
 
-And that’s it! The next `cargo build` will automatically build `hello_utils` and
-all of its own dependencies, and others can also start using the crate as well.
-However, crates that use dependencies specified with only a path are not
-permitted on [crates.io]. If we wanted to publish our `hello_world` crate, we
-would need to publish a version of `hello_utils` to [crates.io]
-and specify its version in the dependencies line as well:
-
+E é isso! O próximo `cargo build` automaticamente construirá o `hello_utils` e todas as suas próprias dependências, e outros também podem começar a usar a crate. 
+No entanto, as crates que usam dependências especificadas apenas com um caminho não são permitidas no [crates.io]. 
+Se quisermos publicar nossa crate `hello_world`, precisaríamos publicar uma versão de `hello_utils` no [crates.io] e especificar sua versão na linha de dependências também:
 ```toml
 [dependencies]
 hello_utils = { path = "hello_utils", version = "0.1.0" }
 ```
 
-> **Note**: Neither the `git` key nor the `path` key changes the meaning of the
-> `version` key: the `version` key always implies that the package is available
-> in a registry. `version`, `git`, and `path` keys are considered [separate
-> locations](#multiple-locations) for resolving the dependency.
+> **Nota**: Nem a chave `git` nem a chave `path` alteram o significado da chave `version`: 
+> a chave `version` sempre implica que o pacote está disponível em um registro. 
+> As chaves `version`, `git` e `path` são consideradas [locais separados](#multiple-locations) para resolver a dependência.
+> **Nota**: O [crates.io] não permite que pacotes sejam publicados com dependências em código publicado fora do [crates.io] em si (as [dev-dependencies] são ignoradas). 
+> Consulte a seção [Locais múltiplos](#multiple-locations) para uma alternativa de fallback para dependências `git` e `path`.
 
-> **Note**: [crates.io] does not allow packages to be published with
-> dependencies on code published outside of [crates.io] itself
-> ([dev-dependencies] are ignored). See the [Multiple
-> locations](#multiple-locations) section for a fallback alternative for `git`
-> and `path` dependencies.
+## Locais Múltiplos {#multiple-locations}
 
-## Multiple locations
-
-It is possible to specify both a registry version and a `git` or `path`
-location. The `git` or `path` dependency will be used locally (in which case
-the `version` is checked against the local copy), and when published to a
-registry like [crates.io], it will use the registry version. Other
-combinations are not allowed. Examples:
+É possível especificar tanto uma versão de registro quanto uma localização `git` ou `path`. A dependência `git` ou `path`(caminho) será usada localmente (nesse caso, a `version` é verificada em relação à cópia local), e quando publicada em um registro como [crates.io], ela usará a versão do registro. Outras combinações não são permitidas. Exemplos:
 
 ```toml
 [dependencies]
@@ -299,20 +227,17 @@ smallvec = { git = "https://github.com/servo/rust-smallvec.git", version = "1.0"
 # N.B. that if a version doesn't match, Cargo will fail to compile!
 ```
 
-One example where this can be useful is when you have split up a library into
-multiple packages within the same workspace. You can then use `path`
-dependencies to point to the local packages within the workspace to use the
-local version during development, and then use the [crates.io] version once it
-is published. This is similar to specifying an
-[override](overriding-dependencies.md), but only applies to this one
-dependency declaration.
+Um exemplo em que isso pode ser útil é quando você dividiu uma biblioteca em
+vários pacotes dentro do mesmo espaço de trabalho. Você pode então usar as dependências `path`
+para apontar para os pacotes locais dentro do espaço de trabalho e usar a
+versão local durante o desenvolvimento e, em seguida, usar a versão [crates.io] uma vez que
+esteja publicado. Isso é semelhante a especificar uma
+[substituição(override)](overriding-dependencies.md), mas se aplica apenas a esta
+declaração de dependência específica.
 
-## Platform specific dependencies
+## Dependências específicas da plataforma
 
-Platform-specific dependencies take the same format, but are listed under a
-`target` section. Normally Rust-like [`#[cfg]`
-syntax](../../reference/conditional-compilation.html) will be used to define
-these sections:
+As dependências específicas da plataforma seguem o mesmo formato, mas são listadas dentro de uma seção `target`. Normalmente, será usada uma sintaxe semelhante a [`#[cfg]`](../../reference/conditional-compilation.html) em Rust para definir essas seções:
 
 ```toml
 [target.'cfg(windows)'.dependencies]
@@ -328,18 +253,11 @@ native-i686 = { path = "native/i686" }
 native-x86_64 = { path = "native/x86_64" }
 ```
 
-Like with Rust, the syntax here supports the `not`, `any`, and `all` operators
-to combine various cfg name/value pairs.
+Assim como no Rust, a sintaxe aqui suporta os operadores `not`, `any` e `all` para combinar várias pares de nome/valor de cfg.
 
-If you want to know which cfg targets are available on your platform, run
-`rustc --print=cfg` from the command line. If you want to know which `cfg`
-targets are available for another platform, such as 64-bit Windows,
-run `rustc --print=cfg --target=x86_64-pc-windows-msvc`.
+Se você deseja saber quais alvos de cfg estão disponíveis em sua plataforma, execute `rustc --print=cfg` a partir da linha de comando. Se você quiser saber quais alvos de cfg estão disponíveis para outra plataforma, como o Windows de 64 bits, execute `rustc --print=cfg --target=x86_64-pc-windows-msvc`.
 
-Unlike in your Rust source code, you cannot use
-`[target.'cfg(feature = "fancy-feature")'.dependencies]` to add dependencies
-based on optional features. Use [the `[features]` section](features.md)
-instead:
+Ao contrário do seu código-fonte Rust, você não pode usar `[target.'cfg(feature = "fancy-feature")'.dependencies]` para adicionar dependências com base em recursos opcionais. Em vez disso, utilize [a seção `[features]`](features.md):
 
 ```toml
 [dependencies]
@@ -350,13 +268,10 @@ bar = { version = "1.0", optional = true }
 fancy-feature = ["foo", "bar"]
 ```
 
-The same applies to `cfg(debug_assertions)`, `cfg(test)` and `cfg(proc_macro)`.
-These values will not work as expected and will always have the default value
-returned by `rustc --print=cfg`.
-There is currently no way to add dependencies based on these configuration values.
+O mesmo se aplica a `cfg(debug_assertions)`, `cfg(test)` e `cfg(proc_macro)`. Esses valores não funcionarão como o esperado e sempre terão o valor padrão retornado por `rustc --print=cfg`. 
+Atualmente, não há como adicionar dependências com base nesses valores de configuração.
 
-In addition to `#[cfg]` syntax, Cargo also supports listing out the full target
-the dependencies would apply to:
+Além da sintaxe `#[cfg]`, o Cargo também suporta a listagem completa do alvo ao qual as dependências se aplicariam:
 
 ```toml
 [target.x86_64-pc-windows-gnu.dependencies]
@@ -366,10 +281,9 @@ winhttp = "0.4.0"
 openssl = "1.0.1"
 ```
 
-### Custom target specifications
+### Especificações de destino personalizadas
 
-If you’re using a custom target specification (such as `--target
-foo/bar.json`), use the base filename without the `.json` extension:
+Se você estiver usando uma especificação de destino personalizada (como `--target foo/bar.json`), use o nome de arquivo base sem a extensão `.json`:
 
 ```toml
 [target.bar.dependencies]
@@ -380,45 +294,35 @@ openssl = "1.0.1"
 native = { path = "native/i686" }
 ```
 
-> **Note**: Custom target specifications are not usable on the stable channel.
+> **Nota**: As especificações de destino personalizadas não são utilizáveis no canal estável.
 
-## Development dependencies
+## Dependências de desenvolvimento
 
-You can add a `[dev-dependencies]` section to your `Cargo.toml` whose format
-is equivalent to `[dependencies]`:
+Você pode adicionar uma seção `[dev-dependencies]` ao seu `Cargo.toml` cujo formato é equivalente ao `[dependencies]`:
 
 ```toml
 [dev-dependencies]
 tempdir = "0.3"
 ```
 
-Dev-dependencies are not used when compiling
-a package for building, but are used for compiling tests, examples, and
-benchmarks.
+As dependências de desenvolvimento não são usadas ao compilar um pacote para construção, mas são usadas para compilar testes, exemplos e benchmarks.
 
-These dependencies are *not* propagated to other packages which depend on this
-package.
+Essas dependências *não* são propagadas para outros pacotes que dependem deste pacote.
 
-You can also have target-specific development dependencies by using
-`dev-dependencies` in the target section header instead of `dependencies`. For
-example:
+Você também pode ter dependências de desenvolvimento específicas do alvo usando `dev-dependencies` no cabeçalho da seção de alvo em vez de `dependencies`. Por exemplo:
 
 ```toml
 [target.'cfg(unix)'.dev-dependencies]
 mio = "0.0.1"
 ```
 
-> **Note**: When a package is published, only dev-dependencies that specify a
-> `version` will be included in the published crate. For most use cases,
-> dev-dependencies are not needed when published, though some users (like OS
-> packagers) may want to run tests within a crate, so providing a `version` if
-> possible can still be beneficial.
+> **Nota**: Quando um pacote é publicado, somente as dev-dependências que especificam uma `version` serão incluídas na crate publicada. 
+> Para a maioria dos casos de uso, as dev-dependências não são necessárias quando publicadas, embora alguns usuários 
+> (como empacotadores de sistemas operacionais) possam querer executar testes dentro de uma crate, então fornecer uma `version`, se possível, ainda pode ser benéfico.
 
-## Build dependencies
+## Dependências de compilação
 
-You can depend on other Cargo-based crates for use in your build scripts.
-Dependencies are declared through the `build-dependencies` section of the
-manifest:
+Você pode depender de outras crates baseadas no Cargo para uso em seus scripts de compilação. As dependências são declaradas por meio da seção `build-dependencies` do manifesto:
 
 ```toml
 [build-dependencies]
@@ -426,56 +330,42 @@ cc = "1.0.3"
 ```
 
 
-You can also have target-specific build dependencies by using
-`build-dependencies` in the target section header instead of `dependencies`. For
-example:
+Você também pode ter dependências de compilação específicas do alvo usando `build-dependencies` no cabeçalho da seção de alvo em vez de `dependencies`. Por exemplo:
 
 ```toml
 [target.'cfg(unix)'.build-dependencies]
 cc = "1.0.3"
 ```
 
-In this case, the dependency will only be built when the host platform matches the
-specified target.
+Nesse caso, a dependência será construída apenas quando a plataforma de hospedagem corresponder ao alvo especificado.
 
-The build script **does not** have access to the dependencies listed
-in the `dependencies` or `dev-dependencies` section. Build
-dependencies will likewise not be available to the package itself
-unless listed under the `dependencies` section as well. A package
-itself and its build script are built separately, so their
-dependencies need not coincide. Cargo is kept simpler and cleaner by
-using independent dependencies for independent purposes.
+O script de compilação **não** tem acesso às dependências listadas na seção `dependencies` ou `dev-dependencies`. 
+As dependências de compilação também não estarão disponíveis para o pacote em si, a menos que também estejam listadas na seção `dependencies`. 
+Um pacote em si e seu script de compilação são construídos separadamente, então suas dependências não precisam coincidir. O Cargo é mantido mais simples e limpo ao usar dependências independentes para fins independentes.
 
-## Choosing features
+## Escolhendo recursos
 
-If a package you depend on offers conditional features, you can
-specify which to use:
+Se um pacote no qual você depende oferece recursos condicionais, você pode especificar quais usar:
 
 ```toml
 [dependencies.awesome]
 version = "1.3.5"
-default-features = false # do not include the default features, and optionally
-                         # cherry-pick individual features
+default-features = false # não incluir os recursos padrão, e opcionalmente
+                         # selecionar recursos individuais específicos.
 features = ["secure-password", "civet"]
 ```
 
-More information about features can be found in the [features
-chapter](features.md#dependency-features).
+Mais informações sobre recursos podem ser encontradas no [capítulo de recursos](features.md#dependency-features).
 
-## Renaming dependencies in `Cargo.toml`
+## Renomeando dependências no `Cargo.toml`
 
-When writing a `[dependencies]` section in `Cargo.toml` the key you write for a
-dependency typically matches up to the name of the crate you import from in the
-code. For some projects, though, you may wish to reference the crate with a
-different name in the code regardless of how it's published on crates.io. For
-example you may wish to:
+Ao escrever uma seção `[dependencies]` no `Cargo.toml`, a chave que você escreve para uma dependência geralmente corresponde ao nome da crate que você importa no código. Para alguns projetos, você pode desejar fazer referência à crate com um nome diferente no código, independentemente de como ela é publicada no crates.io. Por exemplo, você pode desejar:
 
-* Avoid the need to  `use foo as bar` in Rust source.
-* Depend on multiple versions of a crate.
-* Depend on crates with the same name from different registries.
+* Evitar a necessidade de `use foo as bar` no código Rust.
+* Dependência de múltiplas versões de uma crate.
+* Dependência de crates com o mesmo nome de diferentes registros.
 
-To support this Cargo supports a `package` key in the `[dependencies]` section
-of which package should be depended on:
+Para dar suporte a isso, o Cargo oferece uma chave `package` na seção `[dependencies]` na qual você especifica em qual pacote deve ser dependido:
 
 ```toml
 [package]
@@ -492,51 +382,41 @@ In this example, three crates are now available in your Rust code:
 
 ```rust,ignore
 extern crate foo; // crates.io
-extern crate bar; // git repository
-extern crate baz; // registry `custom`
+extern crate bar; // git repositório
+extern crate baz; // registro `custom`
 ```
 
-All three of these crates have the package name of `foo` in their own
-`Cargo.toml`, so we're explicitly using the `package` key to inform Cargo that
-we want the `foo` package even though we're calling it something else locally.
-The `package` key, if not specified, defaults to the name of the dependency
-being requested.
+Todas essas três crates têm o nome do pacote `foo` em seus próprios `Cargo.toml`, então estamos usando explicitamente a chave `package` para informar ao Cargo que queremos o pacote `foo`, mesmo que o chamemos de algo diferente localmente. A chave `package`, se não especificada, terá como padrão o nome da dependência solicitada.
 
-Note that if you have an optional dependency like:
+Observe que se você tiver uma dependência opcional como:
 
 ```toml
 [dependencies]
 bar = { version = "0.1", package = 'foo', optional = true }
 ```
 
-you're depending on the crate `foo` from crates.io, but your crate has a `bar`
-feature instead of a `foo` feature. That is, names of features take after the
-name of the dependency, not the package name, when renamed.
+Você está dependendo da crate `foo` do crates.io, mas a sua crate tem um recurso `bar` 
+em vez de um recurso `foo`. Ou seja, os nomes dos recursos seguem o nome da dependência, não o nome do pacote, quando renomeados.
 
-Enabling transitive dependencies works similarly, for example we could add the
-following to the above manifest:
+Habilitar dependências transitivas funciona de maneira semelhante, por exemplo, poderíamos adicionar o seguinte ao manifesto acima:
 
 ```toml
 [features]
-log-debug = ['bar/log-debug'] # using 'foo/log-debug' would be an error!
+log-debug = ['bar/log-debug'] # Usar 'foo/log-debug' seria um erro!
 ```
 
-## Inheriting a dependency from a workspace
+## Herdando uma dependência de uma Área de trabalho
 
-Dependencies can be inherited from a workspace by specifying the
-dependency in the workspace's [`[workspace.dependencies]`][workspace.dependencies] table.
-After that, add it to the `[dependencies]` table with `workspace = true`.
+As dependências podem ser herdadas de uma área de trabalho especificando a dependência na tabela [`[workspace.dependencies]`][workspace.dependencies] da área de trabalho. Em seguida, adicione-a à tabela `[dependencies]` com `workspace = true`.
 
-Along with the `workspace` key, dependencies can also include these keys:
-- [`optional`][optional]: Note that the`[workspace.dependencies]` table is not allowed to specify `optional`.
-- [`features`][features]: These are additive with the features declared in the `[workspace.dependencies]`
+Junto com a chave `workspace`, as dependências também podem incluir estas chaves:
+- [`optional`][optional]: Note que a tabela `[workspace.dependencies]` não pode especificar `optional`.
+- [`features`][features]: Estes são adicionais com os recursos declarados em `[workspace.dependencies]`.
 
-Other than `optional` and `features`, inherited dependencies cannot use any other
-dependency key (such as `version` or `default-features`).
+Além de `optional` e `features`, as dependências herdadas não podem usar nenhuma outra chave de dependência (como `version` ou `default-features`).
 
-Dependencies in the `[dependencies]`, `[dev-dependencies]`, `[build-dependencies]`, and
-`[target."...".dependencies]` sections support the ability to reference the
-`[workspace.dependencies]` definition of dependencies.
+As dependências nas seções `[dependencies]`, `[dev-dependencies]`, `[build-dependencies]` e `[target."...".dependencies]` 
+suportam a capacidade de fazer referência à definição de dependências em `[workspace.dependencies]`.
 
 ```toml
 [package]

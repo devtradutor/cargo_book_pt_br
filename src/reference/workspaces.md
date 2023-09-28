@@ -184,7 +184,7 @@ description.workspace = true
 documentation.workspace = true
 ```
 
-## The `dependencies` table
+## The `dependencies` table {#the-dependencies-table}
 
 The `workspace.dependencies` table is where you define dependencies to be
 inherited by members of a workspace.

@@ -105,7 +105,7 @@ enables the listed features. This behavior can be changed by:
 > change](#semver-compatibility) to remove a feature from the default set, so
 > you should be confident that you will keep those features.
 
-## Optional dependencies
+## Optional dependencies {#optional-dependencies}
 
 Dependencies can be marked "optional", which means they will not be compiled
 by default. For example, let's say that our 2D image processing library uses
@@ -164,7 +164,7 @@ our crate.
 
 [platform-specific dependencies]: specifying-dependencies.md#platform-specific-dependencies
 
-## Dependency features
+## Dependency features {#dependency-features}
 
 Features of dependencies can be enabled within the dependency declaration. The
 `features` key indicates which features to enable:

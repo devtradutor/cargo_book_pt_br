@@ -19,7 +19,7 @@
     * [Construção de Cache](guide/build-cache.md)
 
 * [Cargo Reference](reference/index.md)
-    * [Specifying Dependencies](reference/specifying-dependencies.md)
+    * [Especificando Dependências](reference/specifying-dependencies.md)
         * [Overriding Dependencies](reference/overriding-dependencies.md)
     * [The Manifest Format](reference/manifest.md)
         * [Cargo Targets](reference/cargo-targets.md)

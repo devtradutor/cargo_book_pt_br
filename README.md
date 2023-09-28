@@ -6,4 +6,4 @@ Esta é a tradução do [Livro Cargo](https://doc.rust-lang.org/cargo/)
 
 Status | Arquivos | Concluído
 :---:|:----:|:----:
-Em Andamento :running::running: | `15/87` | `17,2%`
+Em Andamento :running::running: | `16/87` | `18,3%`
