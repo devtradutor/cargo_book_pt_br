@@ -1,12 +1,10 @@
-# Overriding Dependencies
+# Substituindo Dependências
 
-The desire to override a dependency can arise through a number of scenarios.
-Most of them, however, boil down to the ability to work with a crate before
-it's been published to [crates.io]. For example:
+O desejo de substituir uma dependência pode surgir em vários cenários. 
+A maioria deles, entretanto, se resume à capacidade de trabalhar com uma crate antes dela ser publicada no [crates.io]. Por exemplo:
 
-* A crate you're working on is also used in a much larger application you're
-  working on, and you'd like to test a bug fix to the library inside of the
-  larger application.
+* Uma crate na qual você está trabalhando também é usada em uma aplicação muito 
+  maior que você está trabalhando e gostaria de testar uma correção de bug na biblioteca dentro do aplicação maior.
 * An upstream crate you don't work on has a new feature or a bug fix on the
   master branch of its git repository which you'd like to test out.
 * You're about to publish a new major version of your crate, but you'd like to
