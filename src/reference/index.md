@@ -1,6 +1,6 @@
 # Cargo Reference
 
-The reference covers the details of various areas of Cargo.
+A referência abrange os detalhes de diversas áreas do Cargo.
 
 * [Specifying Dependencies](specifying-dependencies.md)
     * [Overriding Dependencies](overriding-dependencies.md)
